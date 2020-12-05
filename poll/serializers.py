@@ -25,7 +25,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 class QuestionSerializer(serializers.ModelSerializer):
     choices = ChoiceSerializer(many=True)
-    tags = TagSerializer(many=True)
+    # tags = TagSerializer(many=True)
 
     class Meta:
         model = Question
@@ -35,17 +35,16 @@ class QuestionSerializer(serializers.ModelSerializer):
             "status",
             "created_by",
             "choices",
-            "tags"
         ]
         read_only_fields = ["tags"]
 
     def create(self, validated_data):
         choices = validated_data.pop('choices')
-        tags = validated_data.pop('tags')
+        # tags = validated_data.pop('tags')
         question = Question.objects.create(**validated_data)
         for choice in choices:
             Choice.objects.create(**choice, question=question)
-        question.tags.set(tags)
+        # question.tags.set(tags)
         return question
 
     def update(self, instance, validated_data):
